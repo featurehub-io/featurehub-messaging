@@ -1,0 +1,97 @@
+= Featurehub Messaging
+
+== Overview
+
+This provides a set of nodejs libraries and user-apps that will listen for incoming events in the format of
+the https://github.com/featurehub-io/featurehub/tree/main/infra/api-bucket/files/messaging[`featurehub-messaging`] (check your version of FeatureHub release notes to determine which version is supported here) - which is a *diff* message on an individual feature.
+
+It tells you which feature changed, all of its changes and all the other details alongside, all wrapped
+in a Cloud Event. The CloudEvent will tell you what type of message is included and your code should
+route or understand what to do from there.
+
+
+== Library Architecture
+
+The dependencies are broken up so they can be reused easily for supporting other items down the line
+for our development team.
+
+----
+|--------|                        |---------|
+| Cloud  |                        | Express |
+| Event  |                        | Web     |
+| Tools  |                        |         |
+|--------| <--    |--------| <--  |---------|
+                  | Cloud  |
+|--------|        | Events |      |----------|
+| Slack  |        | to     |  <-- | GCP      |
+| Sender | <---   | Slack  |      | Cloud    |
+|--------|        |--------|      | Function |
+                 /                |----------|
+|-----------|   /
+| Update    | <-
+| Converter |
+|-----------|
+----
+
+At its base level, we have 3 libraries:
+
+- *Cloud Event Tools* - this knows how to decode the body of the message depending if it is gzip json or
+   pure json, it also knows how to decrypt the secrets that are contained in the message. More on the secrets below.
+- *Slack Sender* - this is a basic sender at the moment, it assumes you are sending a string, that you
+  are using https://api.slack.com/methods/chat.postMessage[`postMessage`] and you have an Slack Bearer token. The format of the channel must be in the
+    approved format. Make sure you https://api.slack.com/messaging/sending[follow the instructions on the Slack website] for signing up and
+    your token needs `chat:write`.
+- *Update Converter* - this takes a https://handlebarsjs.com/guide/#what-is-handlebars[Handlebars] format content and will apply the incoming body of the message to it, returning the formatted data. There are multiple ways to provide the source and we provide one out of the box.
+  * Environment variable `SOURCE` = `file`, then it will try and load a file looking at the environment variable `FILE_MUSTACHE_TEMPLATE`. This works well for Kubernetes.
+  * Environment variable `SOURCE` = `env`, then it will try and load the mustache template from the environment variable `MUSTACHE_TEMPLATE`.
+
+== Slack&#8482; Support
+
+The support for Slack is encoded primarily in the cloud-event-to-slack artifact, it is designed to
+take the cloud event, decode the body, extract out the slack specific stuff, decrypt the secrets
+(for Slack this is the Bearer token, this means the token is always encrypted until it is sent to
+Slack) and then send it to Slack.
+
+It returns one of several codes:
+
+- 200 - everything is ok
+- 400 - there was some bad input, message is included
+- 418 - it couldn't generate a payload to send to Slack
+- 422 - the slack token or channel was missing
+- 424 - something went wrong talking to slack
+
+== Secrets
+
+Secrets are stored in the incoming message, for the `Feature Messaging` format, they are stored in
+a field called `additionalInfo`. The code is designed to walk through this `Record<string,string>` (dictionary) and find any fields that end with `.encrypt` - this is a list of fields that are
+encrypted. It will then add `.encrypted` and `.salt` on the end of that name to extract out the
+unencrypted value. For example
+
+----
+"integration.slack.enabled": "true",
+  "integration.slack.channel_name": "C0542MDQ0TH",
+  "integration.slack.encrypt": "integration.slack.token",
+  "integration.slack.token.encrypted": "cYvuUixN92qV6ojLCliwqPKM4Q1jxP66MyOWCoWS9U97daLGNTtuqUtaa1LKpKvaBJ5mm2coOiHkZ2ws5sf2pglO74txr/VQ1cisy3dicHQMrwaaTw==",
+  "integration.slack.token.salt": "f8e80a15-924d-4705-b8fe-7ac671ede1a4"});
+----
+
+This will extract out the encrypted token along with its salt and use the password you have provided
+in the environment variable `FEATUREHUB_PASSWORD`.
+
+== Working on the code
+
+There is a script in the base folder called `install-local.sh` - if you run this it will
+run through and link all of the libraries together. The npm commands of import are:
+
+- `build` - compiles the typescript into the `dist` folder ready for release
+- `link` - compiles the typescript and does an `npm link` on it to make it available to other projects locally
+- `setup` - this will use `npm link X` to link in all the local library dependencies into the project.
+- `test` - runs tests
+- `clean` - cleans the dist folder
+- `release` - packages it up ready for npm to publish (not all things have this)
+- `docker` - issues the necessary commands to build the docker image
+
+
+
+
+

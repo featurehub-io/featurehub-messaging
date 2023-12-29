@@ -1,0 +1,53 @@
+{
+  "name": "featurehub-cloud-event-to-slack",
+  "version": "1.0.0",
+  "description": "Library is used to convert a cloud event and call Slack. It means the event can be picked up in any way and all the core functionality is here.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "package.json",
+    "README.md"
+  ],
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "npm run clean && node ./node_modules/typescript/bin/tsc",
+    "setup": "npm link featurehub-cloud-event-tools featurehub-slack-sender featurehub-update-converter",
+    "link": "node ./node_modules/typescript/bin/tsc && npm link",
+    "lint": "./node_modules/.bin/eslint . --ext .js,.jsx,.ts,.tsx --fix",
+    "release": "npm run build && npm publish"
+  },
+  "dependencies": {
+    "cloudevents": "^8.0.0"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.3.10",
+    "@types/mocha": "^9.0.0",
+    "@types/node": "^18.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.13.1",
+    "@typescript-eslint/parser": "^6.13.1",
+    "chai": "^4.3.7",
+    "eslint": "^8.55.0",
+    "eslint-plugin-filenames-simple": "^0.9.0",
+    "mocha": "^10.1.0",
+    "typescript": "^5.2.2"
+  },
+  "author": "info@featurehub.io",
+  "license": "MIT",
+  "homepage": "https://featurehub.io",
+  "keywords": [
+    "feature-flag-api",
+    "feature-flag-webhook",
+    "feature-experimentation",
+    "feature-flag",
+    "flag",
+    "toggle",
+    "feature-toggle",
+    "feature-toggle-api",
+    "remote-configuration",
+    "gradual-rollout",
+    "ab-testing",
+    "featurehub",
+    "featurehub-update-converter"
+  ]
+}

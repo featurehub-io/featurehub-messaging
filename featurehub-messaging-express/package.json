@@ -1,0 +1,23 @@
+{
+  "name": "featurehub-messaging-express",
+  "version": "1.0.0",
+  "description": "Allow messaging to run as an express app for general use case",
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "npm run clean && node ./node_modules/typescript/bin/tsc",
+    "start": "npm run build && SOURCE=file FILE_MUSTACHE_TEMPLATE=../slack-processor/featurehub-update-converter/slack.mustache node dist/express.js",
+    "setup": "npm link featurehub-cloud-event-to-slack",
+    "lint": "./node_modules/.bin/eslint . --ext .js,.jsx,.ts,.tsx --fix",
+    "docker": "docker build -t featurehub/messaging-express:1.0 ."
+  },
+  "author": "featurehub.io",
+  "dependencies": {
+    "@types/node": "^18.0.0",
+    "cloudevents": "^8.0.0",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "typescript": "^5.2.2"
+  }
+}

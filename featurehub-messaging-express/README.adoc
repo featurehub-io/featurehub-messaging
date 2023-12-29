@@ -1,0 +1,12 @@
+= featurehub-messaging-express
+
+This is an end user application the user can run to receive messages and pass them onto slack.
+
+It expects the following environment variables to be defined:
+
+- `FEATUREHUB_PASSWORD` - this is the password allocated to the encrypted data coming from the Management Repository.
+- `SOURCE` - this is how the application determines how it should look for the mustache template. It must be either `file` or `env`.
+  * Environment variable `SOURCE` = `file`, then it will try and load a file looking at the environment variable `FILE_MUSTACHE_TEMPLATE`. This works well for Kubernetes.
+  * Environment variable `SOURCE` = `env`, then it will try and load the mustache template from the environment variable `MUSTACHE_TEMPLATE`.
+
+It is bundled as a docker image under the same name, but also provided as source.

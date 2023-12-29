@@ -1,0 +1,35 @@
+{
+  "eName": "production",
+  "eId": "8905fbdd-859b-4c93-ac1e-e86f8a662d7c",
+  "pName": "port1",
+  "pId": "da984be9-21a5-489c-9671-d4f04b0f5ded",
+  "oName": "org1",
+  "oId": "230843f3-679e-40e3-8bed-c890a0ecd2f8",
+  "aName": "app1",
+  "aId": "2317a207-99e1-4bc9-8ecd-2695a3de299c",
+  "whenUpdated": "2023-12-28T21:41:26.828Z",
+  "whoUpdatedId": "e6b99f51-b67e-496d-92ca-06eecaa5dcb5",
+  "whoUpdated": "irina",
+  "fName": "feature_bool",
+  "fKey": "feature_bool",
+  "fId": "81533812-6058-4626-85cc-5fe3d8848a0b",
+  "featureValueId": "4f72fc1d-a1ab-4d68-8140-b432588f6432",
+  "featureValueType": "BOOLEAN",
+  "version": {
+    "prev": 30,
+    "curr": 29
+  },
+  "featureValueUpdated": {
+    "updated": "true",
+    "previous": "false"
+  },
+  "additionalInfo": {
+    "integration.slack.enabled": "true",
+    "integration.slack.api_key": "ENCRYPTED-TEXT",
+    "integration.slack.channel_name": "C0542MDQ0TH",
+    "integration.slack.encrypt": "integration.slack.token",
+    "integration.slack.token": "ENCRYPTED-TEXT",
+    "integration.slack.token.encrypted": "cYvuUixN92qV6ojLCliwqPKM4Q1jxP66MyOWCoWS9U97daLGNTtuqUtaa1LKpKvaBJ5mm2coOiHkZ2ws5sf2pglO74txr/VQ1cisy3dicHQMrwaaTw==",
+    "integration.slack.token.salt": "f8e80a15-924d-4705-b8fe-7ac671ede1a4"
+  }
+}
