@@ -71,7 +71,8 @@ unencrypted value. For example
 "integration.slack.enabled": "true",
   "integration.slack.channel_name": "C0542MDQ0TH",
   "integration.slack.encrypt": "integration.slack.token",
-  "integration.slack.token.encrypted": "cYvuUixN92qV6ojLCliwqPKM4Q1jxP66MyOWCoWS9U97daLGNTtuqUtaa1LKpKvaBJ5mm2coOiHkZ2ws5sf2pglO74txr/VQ1cisy3dicHQMrwaaTw==",
+  'integration.slack.token.encrypted': 'kvVTtMJFJdeO92NtnhddIN0b+2xdXjjmAAWVd/zOK2iP9V1e2xuDQuNR9A==',
+  'integration.slack.token.salt': '0d864150-2714-4ceb-8a64-3d565b7c7f9c',
   "integration.slack.token.salt": "f8e80a15-924d-4705-b8fe-7ac671ede1a4"});
 ----
 
