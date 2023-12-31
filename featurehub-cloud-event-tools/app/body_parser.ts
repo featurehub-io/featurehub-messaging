@@ -2,7 +2,7 @@ import {CloudEventV1} from "cloudevents";
 import * as Zlib from "zlib";
 
 
-export function body_parser<T>(event: CloudEventV1<any>): T {
+export function featurehubCloudEventBodyParser<T>(event: CloudEventV1<any>): T {
   let data: T = undefined;
 
   if (event.datacontenttype === 'application/json') {
