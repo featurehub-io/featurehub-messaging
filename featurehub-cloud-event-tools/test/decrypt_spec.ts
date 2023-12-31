@@ -1,5 +1,5 @@
-import {SymmetricDecrypter} from '../app';
-import {expect} from 'chai';
+import { SymmetricDecrypter } from '../app';
+import { expect } from 'chai';
 
 
 describe('decryption should work as expected', ()=> {
@@ -14,7 +14,7 @@ describe('decryption should work as expected', ()=> {
       'integration.slack.encrypt': 'integration.slack.token',
       'integration.slack.token': 'ENCRYPTED-TEXT',
       'integration.slack.token.encrypted': 'kvVTtMJFJdeO92NtnhddIN0b+2xdXjjmAAWVd/zOK2iP9V1e2xuDQuNR9A==',
-      'integration.slack.token.salt': '0d864150-2714-4ceb-8a64-3d565b7c7f9c'});
+      'integration.slack.token.salt': '0d864150-2714-4ceb-8a64-3d565b7c7f9c' });
 
     expect(Object.keys(record).length).to.eq(3);
     expect(record['integration.slack.token']).to.eq('blah-token-blah');

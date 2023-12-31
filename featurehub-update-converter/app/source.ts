@@ -1,5 +1,5 @@
 
 
 export interface TemplateSource {
-  getTemplate(): Promise<string>;
+  getTemplate(): string;
 }

@@ -42,8 +42,8 @@ At its base level, we have 3 libraries:
     approved format. Make sure you https://api.slack.com/messaging/sending[follow the instructions on the Slack website] for signing up and
     your token needs `chat:write`.
 - *Update Converter* - this takes a https://handlebarsjs.com/guide/#what-is-handlebars[Handlebars] format content and will apply the incoming body of the message to it, returning the formatted data. There are multiple ways to provide the source and we provide one out of the box.
-  * Environment variable `SOURCE` = `file`, then it will try and load a file looking at the environment variable `FILE_MUSTACHE_TEMPLATE`. This works well for Kubernetes.
-  * Environment variable `SOURCE` = `env`, then it will try and load the mustache template from the environment variable `MUSTACHE_TEMPLATE`.
+  * Environment variable `FEATUREHUB_SOURCE` = `file`, then it will try and load a file looking at an environment variable (e.g for Slack you must specify the filename in the environment variable `FEATUREHUB_SLACK_TEMPLATE`). This works well for Kubernetes.
+  * Environment variable `FEATUREHUB_SOURCE` = `env`, then it will try and load the mustache template from an environment variable - (e.g. for Slack the environment variable you must specify is `FEATUREHUB_SLACK_TEMPLATE`).
 
 == Slack&#8482; Support
 

@@ -1,11 +1,11 @@
-import * as crypto from "crypto";
+import * as crypto from 'crypto';
 
-const ivLengthInBytes = 12
-const secretKeyAlgorithm = "sha256"
-const iterationCount = 65536
-const keyLength = 32
-const cipherTransformation = "aes-256-gcm"
-const TAG_LENGTH_BIT = 128
+const ivLengthInBytes = 12;
+const secretKeyAlgorithm = 'sha256';
+const iterationCount = 65536;
+const keyLength = 32;
+const cipherTransformation = 'aes-256-gcm';
+const TAG_LENGTH_BIT = 128;
 
 export class SymmetricDecrypter {
 
@@ -18,15 +18,15 @@ export class SymmetricDecrypter {
   decryptText(cipherText: string, salt: string): string {
     const key = crypto.pbkdf2Sync(this.password, salt, iterationCount, keyLength, secretKeyAlgorithm);
 
-    let encrypted = Buffer.from(cipherText, "base64")
-    const iv =  encrypted.subarray(0, ivLengthInBytes)
-    const auth = encrypted.subarray(encrypted.length - (TAG_LENGTH_BIT/8), encrypted.length)
-    encrypted = encrypted.subarray(ivLengthInBytes, encrypted.length - (TAG_LENGTH_BIT/8))
+    let encrypted = Buffer.from(cipherText, 'base64');
+    const iv =  encrypted.subarray(0, ivLengthInBytes);
+    const auth = encrypted.subarray(encrypted.length - (TAG_LENGTH_BIT / 8), encrypted.length);
+    encrypted = encrypted.subarray(ivLengthInBytes, encrypted.length - (TAG_LENGTH_BIT / 8));
 
     const decipher = crypto.createDecipheriv(cipherTransformation, key, iv);
 
     let decrypted = decipher.update(encrypted, null, 'utf8');
-    decipher.setAuthTag(auth)
+    decipher.setAuthTag(auth);
     decrypted += decipher.final('utf8');
     if (process.env.DEBUG) {
       console.log(decrypted);
@@ -40,8 +40,8 @@ export class SymmetricDecrypter {
     }
     const flds: Record<string, string> = {};
     const skip: Record<string, string> = {};
-    for(const key in info) {
-      if (key.endsWith(".encrypt")) {
+    for (const key in info) {
+      if (key.endsWith('.encrypt')) {
         info[key].split(',').map(s => s.trim()).filter(s => s.length > 0).forEach(fld => {
           const encrypted = info[`${fld}.encrypted`];
           const salt = info[`${fld}.salt`];
@@ -57,7 +57,7 @@ export class SymmetricDecrypter {
         skip[key] = '';
       }
     }
-    for(const key in info) {
+    for (const key in info) {
       if (skip[key] === undefined) {
         flds[key] = info[key];
       }

@@ -1,5 +1,5 @@
-import {CloudEventV1} from "cloudevents";
-import * as Zlib from "zlib";
+import { CloudEventV1 } from 'cloudevents';
+import * as Zlib from 'zlib';
 
 
 export function featurehubCloudEventBodyParser<T>(event: CloudEventV1<any>): T {
@@ -16,7 +16,7 @@ export function featurehubCloudEventBodyParser<T>(event: CloudEventV1<any>): T {
   } else if (event.datacontenttype === 'application/json+gzip') {
     if (event.data !== undefined) {
       if (event.data instanceof Buffer) {
-        const result = Zlib.inflateSync(event.data).toString()
+        const result = Zlib.inflateSync(event.data).toString();
         data = JSON.parse(result) as T;
       } else if (typeof event.data == 'string') {
         data = JSON.parse(Zlib.inflateSync(Buffer.from(event.data)).toString()) as T;

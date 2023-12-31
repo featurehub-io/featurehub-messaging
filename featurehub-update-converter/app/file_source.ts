@@ -1,24 +1,15 @@
-import {TemplateSource} from "./source";
-import * as fs from "fs";
+import { TemplateSource } from './source';
+import * as fs from 'fs';
 
 
 export class FileTemplateSource implements TemplateSource {
-  private source: string | undefined;
+  private source: string;
 
-  constructor() {
-    if (!process.env.FILE_MUSTACHE_TEMPLATE) {
-      console.error('Must specify the FILE_MUSTACHE_TEMPLATE env var which stores the mustache template');
-    }
-    if (!fs.existsSync(process.env.FILE_MUSTACHE_TEMPLATE)) {
-      console.error(`File ${process.env.FILE_MUSTACHE_TEMPLATE} does not exist!`);
-    }
+  constructor(templateRef: string) {
+    this.source = fs.readFileSync(templateRef, 'utf-8');
   }
 
-  async getTemplate(): Promise<string>{
-    if (this.source === undefined) {
-      this.source = fs.readFileSync(process.env.FILE_MUSTACHE_TEMPLATE, 'utf-8');
-    }
-
+  getTemplate(): string {
     return this.source;
   }
 }
