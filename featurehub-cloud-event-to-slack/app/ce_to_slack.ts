@@ -1,5 +1,9 @@
 import {CloudEventV1} from "cloudevents";
-import {body_parser, CloudEventPublishResult, SymmetricDecrypter} from "featurehub-cloud-event-tools";
+import {
+  CloudEventPublishResult,
+  featurehubCloudEventBodyParser,
+  SymmetricDecrypter
+} from "featurehub-cloud-event-tools";
 import {TemplateProcessor} from "featurehub-update-converter";
 import {Slack} from "featurehub-slack-sender";
 
@@ -17,7 +21,7 @@ export async function cloudEventToSlack(event: CloudEventV1<any>) : Promise<Clou
     return { code: 400, message: `${event.type} is not understood` };
   }
 
-  let update: any | undefined = body_parser(event);
+  let update: any | undefined = featurehubCloudEventBodyParser(event);
 
   if (update === undefined) {
     return {code: 400, message: 'unable to parse body of message'};

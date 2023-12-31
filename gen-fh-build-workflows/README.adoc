@@ -1,0 +1,9 @@
+= gen-fh-build-workflows
+
+This is an internal tool we use to generate the build workflows
+for github so we don't have to do it manually and get it wrong.
+
+It uses two mustache templates and reads the package.json files for each
+project listed and depending on what steps are available, it generates those
+steps into the mustache templates.
+

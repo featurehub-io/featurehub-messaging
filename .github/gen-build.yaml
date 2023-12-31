@@ -1,0 +1,27 @@
+packages:
+  - featurehub-cloud-event-to-slack
+  - featurehub-cloud-event-tools
+  - featurehub-slack-sender
+  - featurehub-update-converter
+  - featurehub-messaging-express
+
+overrides:
+  # this overrides what steps we use to build for this project
+  featurehub-messaging-express:
+    steps:
+      - build
+
+defaultSteps:
+  - build
+  - publish-action
+
+stepDefinitions:
+  build:
+    - install
+    - lint
+    - build
+    - test
+
+  publish-action:
+    - install
+    - release
