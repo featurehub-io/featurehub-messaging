@@ -16,7 +16,7 @@ jobs:
         run: npm install
         working-directory: featurehub-cloud-event-tools
       - name: Compile sources and Publish to NPM
-        run: npm run release
+        run: npm run build && npm publish
         working-directory: featurehub-cloud-event-tools
         env:
-          NODE_AUTH_TOKEN: $\{\{ secrets.NPM_TOKEN \}\}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
