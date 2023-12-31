@@ -1,13 +1,14 @@
-import {TemplateSource} from "./source";
+import { TemplateSource } from './source';
 
 
 export class EnvTemplateSource implements TemplateSource {
-  constructor() {
-    if (!process.env.MUSTACHE_TEMPLATE) {
-      console.error('Must specify the MUSTACHE_TEMPLATE env var which stores the mustache template');
-    }
+  private readonly source: string;
+
+  constructor(templateRef: string) {
+    this.source = templateRef;
   }
-  async getTemplate(): Promise<string> {
-    return process.env.MUSTACHE_TEMPLATE!;
+
+  getTemplate(): string {
+    return this.source;
   }
 }

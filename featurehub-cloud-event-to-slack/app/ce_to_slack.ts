@@ -1,14 +1,13 @@
-import {CloudEventV1} from "cloudevents";
+import { CloudEventV1 } from 'cloudevents';
 import {
   CloudEventPublishResult,
   featurehubCloudEventBodyParser,
   SymmetricDecrypter
-} from "featurehub-cloud-event-tools";
-import {TemplateProcessor} from "featurehub-update-converter";
-import {Slack} from "featurehub-slack-sender";
+} from 'featurehub-cloud-event-tools';
+import { TemplateProcessor } from 'featurehub-update-converter';
+import { Slack } from 'featurehub-slack-sender';
 
-
-const templateProcessor = new TemplateProcessor();
+const templateProcessor = new TemplateProcessor(process.env.FEATUREHUB_SLACK_TEMPLATE);
 
 export async function cloudEventToSlack(event: CloudEventV1<any>) : Promise<CloudEventPublishResult> {
   console.log('event is', event, event.data);
@@ -21,14 +20,14 @@ export async function cloudEventToSlack(event: CloudEventV1<any>) : Promise<Clou
     return { code: 400, message: `${event.type} is not understood` };
   }
 
-  let update: any | undefined = featurehubCloudEventBodyParser(event);
+  const update: any | undefined = featurehubCloudEventBodyParser(event);
 
   if (update === undefined) {
-    return {code: 400, message: 'unable to parse body of message'};
+    return { code: 400, message: 'unable to parse body of message' };
   }
 
   if (process.env.DEBUG) {
-    console.log(`received`, JSON.stringify(update, null, 2));
+    console.log('received', JSON.stringify(update, null, 2));
   }
 
   const decrypt = new SymmetricDecrypter(process.env.FEATUREHUB_PASSWORD);
@@ -38,7 +37,7 @@ export async function cloudEventToSlack(event: CloudEventV1<any>) : Promise<Clou
   const slackChannel = configData['integration.slack.channel_name'];
 
   if (slackToken && slackChannel) {
-    let payload = await templateProcessor.process(update);
+    const payload = await templateProcessor.process(update);
 
     if (process.env.DEBUG) {
       console.log('payload is:\n', payload);
@@ -62,8 +61,8 @@ export async function cloudEventToSlack(event: CloudEventV1<any>) : Promise<Clou
       return { code: 418, message: 'Unable to determine payload for event' };
     }
   } else {
-    return {code: 422, message: 'Missing slack token or channel'};
+    return { code: 422, message: 'Missing slack token or channel' };
   }
 
-  return {code: 200, message: 'sent ok'};
+  return { code: 200, message: 'sent ok' };
 }

@@ -1,20 +1,22 @@
-import {TemplateSource} from "./source";
-import {FileTemplateSource} from "./file_source";
-import {EnvTemplateSource} from "./env_source";
-import Handlebars from "handlebars";
+import { TemplateSource } from './source';
+import { FileTemplateSource } from './file_source';
+import { EnvTemplateSource } from './env_source';
+import Handlebars from 'handlebars';
 
 export class TemplateProcessor {
   private template: HandlebarsTemplateDelegate | undefined;
   private readonly source: TemplateSource | undefined;
 
-  constructor() {
-    console.log('TEMPLATE-PROCESSOR', process.env.SOURCE);
-    switch (process.env.SOURCE) {
+  constructor(templateRef: string) {
+    if (process.env.DEBUG) {
+      console.log('TEMPLATE-PROCESSOR', process.env.FEATUREHUB_SOURCE);
+    }
+    switch (process.env.FEATUREHUB_SOURCE) {
       case 'file':
-        this.source = new FileTemplateSource();
+        this.source = new FileTemplateSource(templateRef);
         break;
       case 'env':
-        this.source = new EnvTemplateSource();
+        this.source = new EnvTemplateSource(templateRef);
         break;
     }
   }
@@ -22,7 +24,7 @@ export class TemplateProcessor {
   async process(data: any): Promise<string | undefined> {
     if (this.source) {
       if (!this.template) {
-        this.template = Handlebars.compile( await this.source.getTemplate() );
+        this.template = Handlebars.compile(await this.source.getTemplate());
       }
 
       if (this.template) {
@@ -37,10 +39,11 @@ export class TemplateProcessor {
     return undefined;
   }
 
-  private detectLockJitter(data: any): boolean {
-    // detect if only the lock changed. remove the lock text as well.
-    return false;
-  }
+  // private detectLockJitter(data: any): boolean {
+  //   // detect if only the lock changed. remove the lock text as well.
+  //   // possible future enhancement.
+  //   return false;
+  // }
 
   private readyForTemplate(data: any): any {
     if (process.env.USE_GMT_DATE) {
@@ -56,7 +59,7 @@ export class TemplateProcessor {
 
       data.updatedStrategies.forEach((s: any) => {
         s.nameChanged = (s.newStrategy.name !== s.oldStrategy.name);
-      })
+      });
     }
 
     if (data.lockUpdated) {
