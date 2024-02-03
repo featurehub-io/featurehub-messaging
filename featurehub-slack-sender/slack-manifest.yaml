@@ -1,0 +1,19 @@
+_metadata:
+  major_version: 1
+  minor_version: 1
+display_information:
+  name: FeatureHub
+  long_description: "Your FeatureHub Notification Bot. This app is designed to allow you to notify Slack when features change or update. It can be configured by your system admin with appropriate content."
+  description: Your FeatureHub Notification Bot.
+  background_color: "#0000AA"
+settings:
+  socket_mode_enabled: false
+  interactivity:
+    is_enabled: false
+features:
+  bot_user:
+    display_name: featurehub
+oauth_config:
+  scopes:
+    bot:
+      - chat:write
