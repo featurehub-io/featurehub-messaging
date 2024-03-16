@@ -31,7 +31,7 @@ describe('the parser should decode the data', () => {
 
   it('should decode gzipped json data', () => {
     const obj = JSON.stringify({ x: 2, y: 'zzz' });
-    const zipped = ce.cloneWith({ datacontenttype: 'application/json+gzip', data: ZLib.deflateSync(obj) });
+    const zipped = ce.cloneWith({ datacontenttype: 'application/json+gzip', data: ZLib.gzipSync(obj) });
     const result = featurehubCloudEventBodyParser<any>(zipped);
     expect(result.x).to.eq(2);
     expect(result.y).to.eq('zzz');

@@ -1,6 +1,6 @@
 {
   "name": "featurehub-cloud-event-tools",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Provides basic tooling and dependencies around CloudEvent usage for Node apps.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
